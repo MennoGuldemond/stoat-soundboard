@@ -1,10 +1,9 @@
-import type { FormDataEntryValue } from 'bun';
-import index from './index.html';
-import { join, play } from './soundboard-bot';
+import { join, play, getSoundNames } from './soundboard-bot';
 import { Client } from 'stoat.js';
+import 'dotenv/config';
 
 const server = Bun.serve({
-  port: 3001,
+  port: process.env.PORT || 3000,
   async fetch(req, server) {
     const url = new URL(req.url);
 
@@ -41,20 +40,31 @@ client.on('ready', async () => {
 });
 
 client.on('messageCreate', async (message) => {
-  console.log(message.content);
   try {
+    console.log(message.content);
     if (message.content?.startsWith('/play')) {
       const soundName = message.content.split('/play ')[1];
       console.log(soundName);
       const didPlay = play(soundName!);
       if (!didPlay) {
-        message.channel?.sendMessage('The sound could not be found.');
+        await message.channel?.sendMessage(`The sound "${soundName}" could not be found.`);
       }
+    } else if (message.content === '/sounds') {
+      const sounds = getSoundNames();
+      let response = 'Available sounds:\n\n';
+      sounds.forEach((sound) => {
+        response += `${sound}\n`;
+      });
+      await message.channel?.sendMessage(response);
+    } else if (message.content === '/help') {
+      await message.channel?.sendMessage(
+        'Type "/sounds" to see all available sounds.\nType "/play [soundname]" to play a sound.',
+      );
     }
   } catch (e) {
-    console.error(e);
-    message.channel?.sendMessage('something went wrong, use "/play [sound-name]".');
+    console.error('Error in messageCreate:', e);
+    await message.channel?.sendMessage('something went wrong, use "/play [sound-name]".');
   }
 });
 
-client.loginBot('rkLjdCkyQkBIr42OzYhYsgjmXiWF-jIO8ruB0ZhVT9Eni4HP7_D7FckTlGoErJtd');
+client.loginBot(process.env.BOT_TOKEN!);

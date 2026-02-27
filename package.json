@@ -4,7 +4,9 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "start": "bun run index.ts"
+    "start": "bun run index.ts",
+    "deploy": "rsync -av --exclude='node_modules' ./ men-o@192.168.1.101:~/bots/soundboard-bot",
+    "postinstall": "curl -fsSL https://bun.sh/install | bash"
   },
   "devDependencies": {
     "@types/bun": "latest"
@@ -13,6 +15,7 @@
     "typescript": "^5"
   },
   "dependencies": {
+    "dotenv": "^17.3.1",
     "revoice.js": "^0.2.169",
     "stoat.js": "^7.3.6"
   }

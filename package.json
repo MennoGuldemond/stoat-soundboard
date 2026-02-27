@@ -1,0 +1,19 @@
+{
+  "name": "stoat-soundboard",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "bun run index.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "revoice.js": "^0.2.169",
+    "stoat.js": "^7.3.6"
+  }
+}

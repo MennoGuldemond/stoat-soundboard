@@ -5,8 +5,7 @@
   "private": true,
   "scripts": {
     "start": "bun run index.ts",
-    "deploy": "rsync -av --exclude='node_modules' ./ men-o@192.168.1.101:~/bots/soundboard-bot",
-    "postinstall": "curl -fsSL https://bun.sh/install | bash"
+    "deploy": "rsync -av --exclude='node_modules' ./ men-o@192.168.1.101:~/bots/soundboard-bot"
   },
   "devDependencies": {
     "@types/bun": "latest"
